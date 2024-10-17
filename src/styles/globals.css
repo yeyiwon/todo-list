@@ -21,6 +21,7 @@ body {
   display: flex;
   align-items: center;
   background: #fff;
+  z-index: 99;
 }
 
 .header_inner{
@@ -163,9 +164,17 @@ body {
   justify-content: center;
   align-items: center;
   gap: 16px;
+  height: 100%;
+}
+
+.nametextarea{
+  resize: none;
+  max-width: 100%;
+  background: transparent;
 }
 
 .todo_name_input{
+  outline: #0F172A;
   background: transparent;
 }
 .selectTodo img{
@@ -243,7 +252,7 @@ body {
   overflow: hidden;
 }
 
-textarea {
+.memotextarea {
   width: 100%;
   max-height: 100%; 
   border: none; 
@@ -297,6 +306,9 @@ textarea:placeholder-shown {
 .edit_btn{
   background: #BEF264;
   color: #0F172A;
+}
+.edit_btn:disabled{
+  background:gray;
 }
 .delete_btn{
   background: #F43F5E;

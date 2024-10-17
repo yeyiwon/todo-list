@@ -9,23 +9,12 @@ export default function Home() {
   const tenantId = 'yeyiwon';
   const [input, setInput] = useState('');
   const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [dones, setDones] = useState<TodoItem[]>([]);
 
   const loadTodos = async () => {
-    try {
-      const response = await axios.get(
-        `https://assignment-todolist-api.vercel.app/api/${tenantId}/items`
-      );
-      const allTodos = response.data;
-
-      const falseTodos = allTodos.filter((todo: TodoItem) => !todo.isCompleted);
-      const completedTodos = allTodos.filter((todo: TodoItem) => todo.isCompleted);
-
-      setTodos(falseTodos);
-      setDones(completedTodos);
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await axios.get(
+      `https://assignment-todolist-api.vercel.app/api/${tenantId}/items`
+    );
+    setTodos(response.data); // 모든 TodoItem을 가져와서 todos 상태에 저장
   };
 
   useEffect(() => {
@@ -38,36 +27,27 @@ export default function Home() {
 
   const AddTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (input.trim() === "") return;
 
-    try {
-      const response = await axios.post<TodoItem>(
-        `https://assignment-todolist-api.vercel.app/api/${tenantId}/items`,
-        { name: input }
-      );
-      setTodos([...todos, response.data]);
-      setInput("");
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await axios.post<TodoItem>(
+      `https://assignment-todolist-api.vercel.app/api/${tenantId}/items`,
+      { name: input }
+    );
+    setTodos([...todos, response.data]);
+    setInput("");
   };
 
   const completeTodo = async (id: number) => {
-    try {
-        const todoToUpdate = todos.find(todo => todo.id === id) || dones.find(done => done.id === id);
-        if (!todoToUpdate) return;
-        
-        await axios.patch(
-            `https://assignment-todolist-api.vercel.app/api/${tenantId}/items/${id}`,
-            { isCompleted: !todoToUpdate.isCompleted }
-        );
-
-        loadTodos();
-    } catch (error) {
-        console.error(error);
+    // 투두에서 선택된 아이디를 찾고 그 아이디의 { isCompleted: !todoToUpdate.isCompleted } 상태를 바꿔주는 역할
+    const todoToUpdate = todos.find(todo => todo.id === id);
+    if (todoToUpdate) {
+      await axios.patch(
+        `https://assignment-todolist-api.vercel.app/api/${tenantId}/items/${id}`,
+        { isCompleted: !todoToUpdate.isCompleted }
+      );
+      loadTodos(); 
     }
-}
+  };
 
   return (
     <div className="container">
@@ -85,7 +65,7 @@ export default function Home() {
           >
             <Image
               src={input.trim() === '' ? "/images/plusgray.png" : "/images/pluswhite.png"}
-              alt=""
+              alt="추가 버튼 이미지"
               width={16}
               height={16}
             />
@@ -103,7 +83,8 @@ export default function Home() {
             height={36}
           />
           {
-            todos.length === 0 ? (
+            // 투두에서 isCompleted가 false인 값만 필터해서 0 이면 empty 가 보여짐 
+            todos.filter(todo => !todo.isCompleted).length === 0 ? (
               <div className="empty">
                 <Image
                   src="/images/TodoLarge.png"
@@ -116,24 +97,24 @@ export default function Home() {
                 </p>
               </div>
             ) : (
-              <div>
-                <ul className="List_ul">
-                  {todos.map((todo) => (
-                    <li key={todo.id} className="Todoitem">
-                      <Image
-                        onClick={() => completeTodo(todo.id)} 
-                        src="/images/PropertyDefault.png"
-                        alt="todoempty"
-                        width={32}
-                        height={32}
-                      />
-                      <Link href={`/items/${todo.id}`}>
-                        {todo.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <ul className="List_ul">
+                {todos.filter(todo => !todo.isCompleted).map((todo) => (
+                  
+                  <li key={todo.id} className="Todoitem">
+                    <Image
+                      onClick={() => completeTodo(todo.id)} 
+                      src="/images/PropertyDefault.png"
+                      alt="todoempty"
+                      width={32}
+                      height={32}
+                    />
+                    <Link href={`/items/${todo.id}`}>
+                      {todo.name}
+                    </Link>
+                  </li>
+                  
+                ))}
+              </ul>
             )
           }
         </div>
@@ -146,7 +127,8 @@ export default function Home() {
             height={36}
           />
           {
-            dones.length === 0 ? (
+            // 투두에서 isCompleted가 true인 값만 필터해서 0 이상이면 출력
+            todos.filter(todo => todo.isCompleted).length === 0 ? (
               <div className="empty">
                 <Image
                   src="/images/DoneLarge.png"
@@ -159,7 +141,7 @@ export default function Home() {
               </div>
             ) : (
               <ul className="List_ul">
-                {dones.map((done) => (
+                {todos.filter(todo => todo.isCompleted).map((done) => (
                   <li key={done.id} className="Todoitem Done">
                     <Image
                       onClick={() => completeTodo(done.id)}

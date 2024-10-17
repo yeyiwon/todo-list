@@ -25,6 +25,7 @@ const TodoDetail = () => {
                     );
                     setTodo(response.data);  
                     setTodoName(response.data.name);
+                    // 메모랑 이미지는 초기엔 없기에 빈 문자열로도 받아서 상태 업데이트 한다는 의미 
                     setMemo(response.data.memo || ""); 
                     setPreviewImage(response.data.imageUrl || null); 
                     
@@ -69,6 +70,7 @@ const TodoDetail = () => {
                     uploadedImageUrl = await uploadImage(imageFile);
                 }
     
+                // 항목 수정 패치 
                 await axios.patch(
                     `https://assignment-todolist-api.vercel.app/api/${tenantId}/items/${itemId}`,
                     {
@@ -128,14 +130,21 @@ const TodoDetail = () => {
     const ImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setImageFile(file); // 파일 저장
+            const maxFileSize = 5 * 1024 * 1024;
+            if (file.size > maxFileSize) {
+                alert("파일 크기는 5MB 이하여야 합니다.");
+                return; 
+            }
+    
+            setImageFile(file); 
             const reader = new FileReader();
             reader.onloadend = () => {
-                setPreviewImage(reader.result as string);
+                setPreviewImage(reader.result as string); 
             };
             reader.readAsDataURL(file);
         }
     };
+
     
     return (
         <div className="container">
@@ -148,6 +157,13 @@ const TodoDetail = () => {
                         width={32}
                         height={32}
                     />
+                        {/* <textarea
+                            value={todoName}
+                            className="nametextarea"
+                            onChange={NameChange}
+                            placeholder="할 일 수정"
+                        /> */}
+
                     <input
                         type="text"
                         value={todoName}
@@ -155,6 +171,7 @@ const TodoDetail = () => {
                         placeholder="할 일 수정"
                         className="todo_name_input"
                     />
+                    {/* <p>{todoName}</p> */}
                     </div>
                 </div>
             <div className="TodoDetail">
@@ -199,6 +216,7 @@ const TodoDetail = () => {
                     <h2> Memo </h2>
                     <div className="memocontainer">
                         <textarea
+                            className="memotextarea"
                             value={memo}
                             onChange={InputChange}
                             placeholder="메모를 입력하세요"
@@ -207,7 +225,7 @@ const TodoDetail = () => {
                 </div>
             </div>
             <div className="btn_box">
-                <button className="edit_btn" onClick={updateTodo}> 
+                <button className="edit_btn" onClick={updateTodo} > 
                     <Image
                         src="/images/check.png"
                         alt=""
