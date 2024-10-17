@@ -1,0 +1,355 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+
+body {  
+  margin: 0;
+  padding: 0;
+  font-family: 'NanumSquare', sans-serif; 
+}
+
+.header{
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 1px solid #E2E8F0;
+  display: flex;
+  align-items: center;
+  background: #fff;
+}
+
+.header_inner{
+  width: 1200px;
+  margin: 0 auto;
+  padding: 1em;
+  box-sizing: border-box;
+  align-items: center;
+  display: flex;
+}
+
+.logoLink{
+  display: inline-block;
+  cursor: pointer;
+}
+
+.container{
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 60px;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* todo Input */
+.todo_inputArea{
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  gap: 10px;
+  box-sizing: border-box;
+
+}
+.todo_inputArea > input{
+  width: 100%;
+  height: 56px;
+  padding: 1em;
+  flex: 1;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #64748B;
+  background: #F1F5F9;
+  border-radius: 24px;
+  border: 2px solid #0f172a;
+  box-shadow: 1px 3px 1px 0px rgba(15,23,42,1);
+  outline: none;
+}
+
+.AddTodoBtn{
+  width: 168px;
+  height: 56px;
+  border: 2px solid #0f172a;
+  box-shadow: 1px 3px 1px 0px rgba(15,23,42,1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 16px;
+  border-radius: 24px;
+  background: #7C3AED;
+  color: #E2E8F0;
+}
+.AddTodoBtn:disabled{
+  background: #E2E8F0;
+  color: #0F172A;
+}
+
+/* TodoList */
+
+.TodoList_wrap{
+  display: flex;
+  gap: 20px;
+}
+.TodoList, .DoneList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.empty{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: #94A3B8;
+  font-size: 16px;
+  text-align: center;
+}
+.empty img{
+  width: 240px;
+  height: 240px;
+}
+
+.List_ul{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  
+}
+.Todoitem{
+  width: 100%;
+  height: 50px;
+  color: #1E293B;
+  display: flex;
+  padding: 1em;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 16px;
+  border-radius: 27px;
+  border: 2px solid #0F172A;
+}
+
+.Done{
+  background: #EDE9FE;
+  text-decoration: line-through;
+}
+
+.Todoitem img{
+  cursor: pointer;
+}
+
+
+/* tododetail */
+
+.selectTodo_box{
+  width: 100%;
+  height: 64px;
+  color: #1E293B;
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+  box-sizing: border-box;
+  border-radius: 24px;
+  border: 2px solid #0F172A;
+  text-decoration: underline;
+}
+.selectTodo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.todo_name_input{
+  background: transparent;
+}
+.selectTodo img{
+  cursor: pointer;
+}
+
+.DetailDone{
+  background: #EDE9FE;
+}
+
+.TodoDetail{
+  display: flex;
+  gap: 10px;
+}
+
+.TodoDetail_imgbox{
+  position: relative;
+  flex: 4;
+  background: #F8FAFC;
+  border-radius: 24px;
+  height: 310px;
+  min-height: 310px;
+  border: 2px dashed #CBD5E1;
+  background-repeat: no-repeat;
+}
+.TodoDetail_img{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+
+
+.uploadimgbtn{
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.newimg{
+  background: #E2E8F0;
+}
+.editimg{
+  border: 2px solid #0F172A;
+  background: #0F172A80;
+}
+
+.TodoDetail_memobox {
+  height: 310px; 
+  flex: 6; 
+  min-height: 310px;
+  border-radius: 24px;
+  background-image: url('/images/memo.png'); 
+  background-size: contain;
+  background-position: center;
+  padding: 1em; 
+  display: flex;
+  flex-direction: column; 
+}
+
+.memocontainer{
+  flex: 1;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  padding: 0.5em; 
+  overflow: hidden;
+}
+
+textarea {
+  width: 100%;
+  max-height: 100%; 
+  border: none; 
+  border-radius: 12px; 
+  padding: 0.5em; 
+  resize: none; 
+  overflow-y: auto; 
+  color: #1E293B;
+  font-size: 16px;
+  background-color: transparent; 
+  text-align: center; 
+  outline: none;
+  font-size: 16px;
+  line-height: 1.5;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+textarea:placeholder-shown {
+  text-align: center; 
+}
+
+.TodoDetail_memobox > h2 {
+  color: #92400E;
+  font-weight: 800;
+  margin: 0;
+  text-align: center;
+}
+
+
+
+.btn_box{
+  display: flex;
+  gap: 10px;
+  justify-content: end;
+}
+
+.btn_box > button{
+  width: 168px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 16px;
+  border-radius: 24px;
+  border: 2px solid #0f172a;
+  box-shadow: 1px 3px 1px 0px rgba(15,23,42,1);
+}
+.edit_btn{
+  background: #BEF264;
+  color: #0F172A;
+}
+.delete_btn{
+  background: #F43F5E;
+  color: #ffffff;
+
+}
+
+@media (max-width: 1024px) {
+  .TodoList_wrap {
+    flex-direction: column;
+  }
+
+  .btn_box {
+    justify-content: center;
+  }
+
+  .TodoDetail {
+    flex-direction: column;
+  }
+
+  .TodoDetail_imgbox,
+  .TodoDetail_memobox {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .TodoList_wrap {
+    flex-direction: column;
+  }
+
+  .AddTodoBtn {
+    width: 54px;
+    height: 54px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+  }
+
+  .AddTodoBtn > span {
+    display: none; 
+  }
+
+  .TodoDetail {
+    flex-direction: column;
+  }
+
+  .empty img {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+
+
