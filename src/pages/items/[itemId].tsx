@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"; 
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -11,6 +11,9 @@ const TodoDetail = () => {
     const [todoName, setTodoName] = useState<string>("");
     const router = useRouter();
     const { itemId } = router.query; 
+    // 넥스트에선 useRouter로 아이디 값을 받아 라우터 쿼리에서 받아옴 react 에서의 usePrams 같은 역할 
+    // [itemId]가 쿼리 파라미터로 변환되어 router.query.itemId로 값음
+
     const tenantId = 'yeyiwon'; 
 
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -19,16 +22,17 @@ const TodoDetail = () => {
     useEffect(() => {
         const loadTodo = async () => {
             if (itemId) {
+                // itemId가 존재하는 경우에만 API 호출
                 try {
                     const response = await axios.get<TodoItem>(
                         `https://assignment-todolist-api.vercel.app/api/${tenantId}/items/${itemId}`
                     );
+                    // 받아온 값들을 상태에 설정하기
                     setTodo(response.data);  
                     setTodoName(response.data.name);
                     // 메모랑 이미지는 초기엔 없기에 빈 문자열로도 받아서 상태 업데이트 한다는 의미 
                     setMemo(response.data.memo || ""); 
-                    setPreviewImage(response.data.imageUrl || null); 
-                    
+                    setPreviewImage(response.data.imageUrl || null);
                 } catch (error) {
                     console.error(error);
                 }
@@ -36,11 +40,13 @@ const TodoDetail = () => {
         };
         loadTodo();
     }, [itemId]);
+    // 아이디가 변경될 때마다 useEffect 
 
     const InputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setMemo(e.target.value);
-        e.target.style.height = "auto"; 
+        // e.target.style.height = "auto"; 
         e.target.style.height = `${e.target.scrollHeight}px`;
+        // 내용에 맞게 높이 조절
     };
 
     const NameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,10 +59,10 @@ const TodoDetail = () => {
                 await axios.delete(
                     `https://assignment-todolist-api.vercel.app/api/${tenantId}/items/${itemId}`
                 );
-                alert("할 일이 삭제되었습니다."); 
+                alert("삭제되었습니다."); 
                 router.push('/'); 
             } catch (error) {
-                console.error("할 일 삭제 실패:", error);
+                console.error("삭제 실패:", error);
             }
         }
     };
@@ -64,32 +70,35 @@ const TodoDetail = () => {
     const updateTodo = async () => {
         if (itemId) {
             try {
-                let uploadedImageUrl = previewImage;
+                // 이미지 URL을 기본값으로 설정
+                let uploadedImageUrl = null;
     
+                // 이미지 파일이 있는 경우 업로드 수행
                 if (imageFile) {
                     uploadedImageUrl = await uploadImage(imageFile);
+                } else {
+                    // 이미지 파일이 없으면 previewImage 사용
+                    uploadedImageUrl = previewImage;
                 }
     
-                // 항목 수정 패치 
+                // axios.patch 요청
                 await axios.patch(
                     `https://assignment-todolist-api.vercel.app/api/${tenantId}/items/${itemId}`,
                     {
                         name: todoName,
-                        memo: memo,
-                        imageUrl: uploadedImageUrl,
+                        memo: memo, 
+                        ...(uploadedImageUrl && { imageUrl: uploadedImageUrl }), 
                         isCompleted: todo?.isCompleted,
                     }
                 );
-    
                 alert("할 일이 수정되었습니다.");
                 router.push('/'); 
             } catch (error) {
                 console.error("할 일 수정 실패:", error);
+                alert("할 일 수정에 실패했습니다.");
             }
         }
     };
-
-
     const completeTodo = async () => {
         if (itemId) {
             try {
