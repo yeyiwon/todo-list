@@ -1,8 +1,18 @@
 # Todo List
 
+## 📖 목차
+1. [📝 프로젝트 설명](#📝-프로젝트-설명)
+2. [🍃 배포 주소](#🍃-배포-주소)
+3. [🚀 주요 기능](#🚀-주요-기능)
+4. [⚒️ 기술 스택](#⚒️-기술-스택)
+5. [🧐 사용 방법](#-사용-방법)
+6. [사이트 구성](#사이트-구성)
+7. [🎥 시연](#-시연)
+
+
 ## 📝 프로젝트 설명
 
-Next.js와 TypeScript로 TodoListAPI를 활용하여 만든 Todo List. 
+`Next.js`와 `TypeScript`를 사용하여 `Axios` 로 TodoList API를 활용한 Todo List입니다.
 
 사용자는 할 일을 추가하고, 사진과 메모를 작성하며, 할 일을 수정하고 삭제할 수 있습니다. 
 
@@ -10,7 +20,7 @@ Next.js와 TypeScript로 TodoListAPI를 활용하여 만든 Todo List.
 
 ## 🍃 배포 주소
 
-### https://todo-list-fawn-delta.vercel.app/
+### [https://todo-list-fawn-delta.vercel.app/](https://todo-list-fawn-delta.vercel.app/)
 
 ## 🚀 주요 기능
 
@@ -19,11 +29,6 @@ Next.js와 TypeScript로 TodoListAPI를 활용하여 만든 Todo List.
 - 이미지 업로드 기능
 - 완료 상태 토글 기능
 - 반응형 디자인
-
-## ⚒️ 기술 스택 
-- Next.js
-- TypeScript
-- Axios
 
 ## 🧐 사용 방법
 
@@ -46,11 +51,11 @@ Next.js와 TypeScript로 TodoListAPI를 활용하여 만든 Todo List.
 
 ### 테블릿 
 
-![메인 테블릿 화면](public/ReadMeImage/메인_테블릿.png)
+<img src="public/ReadMeImage/메인_테블릿.png" alt="메인 웹 화면" width="400"/>
 
 ### 모바일 
 
-![메인 모바일 화면](public/ReadMeImage/메인_모바일.png)
+<img src="public/ReadMeImage/메인_모바일.png" alt="메인 웹 화면" width="300"/>
 
 ### 📌 상세 페이지 ([/itemID])
 
@@ -66,14 +71,28 @@ Next.js와 TypeScript로 TodoListAPI를 활용하여 만든 Todo List.
 
 ## 🎥 시연
 
-메인 페이지에서 할 일 추가 후 상세페이지에서 메모만 추가하여 수정하기 누르면 / 으로 돌아갑니다
+    ### 메인 페이지에서 할 일 추가
+
+    메인 페이지에서 새로운 할 일을 추가 및 할 일의 완료 상태를 변경할 수 있습니다.
+
+    할 일의 글씨를 누르면 상세페이지로 이동할 수 있습니다.
+
+    ### 상세 페이지에서 메모 추가
+
+    메모 추가 후 수정하기 버튼을 클릭하면 메인 페이지로 돌아갑니다.
 
 ![시연 영상1](public/ReadMeImage/시연영상1.gif)
 
-할 일 이름 수정, 사진 추가, 메모 수정 
-상세 페이지에서도 할 일 완료 상태 변경 가능  
-삭제하기까지 
+    ### 할 일 수정 및 관리
 
-삭제 후, 수정 후 모두 메인으로 리다이렉트
+    할 일의 이름을 수정하고, 사진을 추가하거나 메모를 수정할 수 있습니다.
+
+    상세 페이지에서 할 일의 완료 상태를 변경할 수 있으며, 필요 시 삭제할 수도 있습니다.
+
+    ### 리다이렉션
+
+    삭제 및 수정 작업이 완료된 후, 메인 페이지로 리다이렉트됩니다.
+
+    삭제 후, 수정 후 모두 메인으로 리다이렉트
 
 ![시연 영상2](public/ReadMeImage/시연-영상2.gif)
