@@ -68,37 +68,32 @@ const TodoDetail = () => {
     };
     
     const updateTodo = async () => {
-        if (itemId) {
-            try {
-                // 이미지 URL을 기본값으로 설정
-                let uploadedImageUrl = null;
+        if (!itemId) return;
     
-                // 이미지 파일이 있는 경우 업로드 수행
-                if (imageFile) {
-                    uploadedImageUrl = await uploadImage(imageFile);
-                } else {
-                    // 이미지 파일이 없으면 previewImage 사용
-                    uploadedImageUrl = previewImage;
+        try {
+            // 이미지 파일이 있으면 업로드, 없으면 기본 or 기존 이미지 사용
+            const uploadedImageUrl = imageFile ? await uploadImage(imageFile) : previewImage;
+    
+            // axios.patch 요청
+            await axios.patch(
+                `https://assignment-todolist-api.vercel.app/api/${tenantId}/items/${itemId}`,
+                {
+                    name: todoName,
+                    memo: memo, 
+
+                    // uploadedImageUrl 이 값이 있을 때만 imageUrl: uploadedImageUrl 올려라
+                    ...(uploadedImageUrl && { imageUrl: uploadedImageUrl }),
+                    isCompleted: todo?.isCompleted,
                 }
-    
-                // axios.patch 요청
-                await axios.patch(
-                    `https://assignment-todolist-api.vercel.app/api/${tenantId}/items/${itemId}`,
-                    {
-                        name: todoName,
-                        memo: memo, 
-                        ...(uploadedImageUrl && { imageUrl: uploadedImageUrl }), 
-                        isCompleted: todo?.isCompleted,
-                    }
-                );
-                alert("할 일이 수정되었습니다.");
-                router.push('/'); 
-            } catch (error) {
-                console.error("할 일 수정 실패:", error);
-                alert("할 일 수정에 실패했습니다.");
-            }
+            );
+            alert("할 일이 수정되었습니다.");
+            router.push('/'); 
+        } catch (error) {
+            console.error("할 일 수정 실패:", error);
+            alert("할 일 수정에 실패했습니다.");
         }
     };
+    
     const completeTodo = async () => {
         if (itemId) {
             try {
@@ -118,8 +113,10 @@ const TodoDetail = () => {
     const uploadImage = async (file: File) => {
         const formData = new FormData();
         formData.append("image", file);
+        // 이미지 파일을 formData에 추가
 
         try {
+            // 서버로 요청 보낼 때 Content-Type을 multipart/form-data로 지정
             const response = await axios.post(
                 `https://assignment-todolist-api.vercel.app/api/${tenantId}/images/upload`,
                 formData,
@@ -136,6 +133,8 @@ const TodoDetail = () => {
         }
     };
 
+    // 사용자가 이미지 파일을 선택하면 파일을 FileReader를 통해 읽어 미리보기 이미지로 보여주고, 파일이 5MB 이하면 서버에 업로드.
+
     const ImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -147,10 +146,14 @@ const TodoDetail = () => {
     
             setImageFile(file); 
             const reader = new FileReader();
+            // 자바스크립트 내장객체 파일 읽는 기능 
             reader.onloadend = () => {
+                // 사진이 onloadend되면 ~  
+                // 읽은 결괄르 스트링 타입으로 명시 해준 후 상태 업뎃
                 setPreviewImage(reader.result as string); 
             };
             reader.readAsDataURL(file);
+            //readAsDataURL 형식으로 읽겠다 
         }
     };
 
